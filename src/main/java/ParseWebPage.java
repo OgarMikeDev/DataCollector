@@ -3,6 +3,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class ParseWebPage {
@@ -14,6 +15,8 @@ public class ParseWebPage {
         String url = "https://skillbox-java.github.io/";
         document = Jsoup.connect(url).get();
         String htmlCode = String.valueOf(document);
+        FileWriter fileWriter = new FileWriter("data/codeHtmlMetro.html");
+        fileWriter.write(htmlCode);
         return htmlCode;
     }
 
