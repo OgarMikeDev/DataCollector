@@ -5,6 +5,8 @@ import org.jsoup.select.Elements;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ParseWebPage {
     private Document document;
@@ -25,8 +27,17 @@ public class ParseWebPage {
 //        elements = document.select(".name");
 //        System.out.println("All stations:");
 //        elements.forEach(elem -> System.out.println(elem.text()));
-
+        String regexForNumber = "data-line=\"[0-9]{1,2}\"";
         elements = document.select(".js-metro-stations");
-        elements.forEach(elem -> System.out.println(elem));
+        elements.forEach(elem -> {
+            Pattern pattern = Pattern.compile(regexForNumber);
+            Matcher matcher = pattern.matcher(String.valueOf(elem));
+            while (matcher.find()) {
+                int start = matcher.start();
+                int end = matcher.end();
+                System.out.println(String.valueOf(elem).substring(start, end));
+            }
+            System.out.println(elem);
+        });
     }
 }
