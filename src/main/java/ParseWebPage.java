@@ -27,7 +27,7 @@ public class ParseWebPage {
 //        elements = document.select(".name");
 //        System.out.println("All stations:");
 //        elements.forEach(elem -> System.out.println(elem.text()));
-        String regexForNumber = "data-line=\"[0-9]{1,2}\"";
+        String regexForNumber = "data-line=\"([0-9]{1,2})|([0-9]+[A-Z]+)|([A-Z]+[0-9]+)\"";
         elements = document.select(".js-metro-stations");
         elements.forEach(elem -> {
             Pattern pattern = Pattern.compile(regexForNumber);
@@ -35,9 +35,14 @@ public class ParseWebPage {
             while (matcher.find()) {
                 int start = matcher.start();
                 int end = matcher.end();
-                System.out.println(String.valueOf(elem).substring(start, end));
+                String line = String.valueOf(elem).substring(start, end);
+                if (line.contains("data-line")) {
+                    System.out.println(line.replaceAll("[^0-9]{1,2}", ""));
+                } else {
+                    System.out.println(line.replaceAll("\"", ""));
+                }
+                System.out.println(elem.text());
             }
-            System.out.println(elem);
         });
     }
 }
