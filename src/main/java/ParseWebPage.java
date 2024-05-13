@@ -40,19 +40,14 @@ public class ParseWebPage {
             String nameStation = elem.select(".name").text();
             String numberLine = elem.attr("data-line");
 
-
             stationMetro.setName(nameStation);
             stationMetro.setNumberLineMetro(numberLine);
-
-
-
             System.out.println("Name station \"" + nameStation + "\"\nNumber line \"" + numberLine + "\"");
 
-            //System.out.println("Current element \"" + elem.text() + "\"");
         });
         try {
             String jsonStation = objectMapper.writeValueAsString(stationMetro);
-            FileWriter fileWriter = new FileWriter("data/station.json");
+            FileWriter fileWriter = new FileWriter("data/stations.json");
             fileWriter.write(jsonStation);
             fileWriter.close();
         } catch (Exception ex) {
