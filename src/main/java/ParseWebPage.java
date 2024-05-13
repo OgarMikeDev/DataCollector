@@ -1,3 +1,4 @@
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.parser.Parser;
@@ -29,10 +30,33 @@ public class ParseWebPage {
 //        elements = document.select(".name");
 //        System.out.println("All stations:");
 //        elements.forEach(elem -> System.out.println(elem.text()));
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        StationMetro stationMetro = new StationMetro();
+
         String regexForNumber = "data-line=\"([0-9]{1,2})|([0-9]+[A-Z]+)|([A-Z]+[0-9]+)\"";
         elements = document.select(".js-metro-stations");
         elements.forEach(elem -> {
-            System.out.println("Current element \"" + elem + "\"");
+            String nameStation = elem.select(".name").text();
+            String numberLine = elem.attr("data-line");
+
+
+            stationMetro.setName(nameStation);
+            stationMetro.setNumberLineMetro(numberLine);
+
+
+
+            System.out.println("Name station \"" + nameStation + "\"\nNumber line \"" + numberLine + "\"");
+
+            //System.out.println("Current element \"" + elem.text() + "\"");
         });
+        try {
+            String jsonStation = objectMapper.writeValueAsString(stationMetro);
+            FileWriter fileWriter = new FileWriter("data/station.json");
+            fileWriter.write(jsonStation);
+            fileWriter.close();
+        } catch (Exception ex) {
+            ex.getMessage();
+        }
     }
 }
