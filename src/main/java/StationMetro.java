@@ -2,22 +2,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StationMetro {
-    private static ArrayList<String> name = new ArrayList<>();
-    private static ArrayList<String> numberLineMetro  = new ArrayList<>();
+    private String numberLineMetro;
+    private ArrayList<String> names = new ArrayList<>();
 
-    public ArrayList<String> getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name.add(name);
-    }
-
-    public ArrayList<String> getNumberLineMetro() {
+    public String getNumberLineMetro() {
         return numberLineMetro;
     }
 
     public void setNumberLineMetro(String numberLineMetro) {
-        this.numberLineMetro.add(numberLineMetro);
+        this.numberLineMetro = numberLineMetro;
+    }
+
+    public ArrayList<String> getName() {
+        return names;
+    }
+
+    public void setName(String name) {
+        names.add(name);
     }
 }

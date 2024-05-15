@@ -32,21 +32,24 @@ public class ParseWebPage {
 //        elements.forEach(elem -> System.out.println(elem.text()));
 
         ObjectMapper objectMapper = new ObjectMapper();
-        StationMetro stationMetro = new StationMetro();
+        AllStationsMetro allStationsMetro = new AllStationsMetro();
 
-        String regexForNumber = "data-line=\"([0-9]{1,2})|([0-9]+[A-Z]+)|([A-Z]+[0-9]+)\"";
+        //String regexForNumber = "data-line=\"([0-9]{1,2})|([0-9]+[A-Z]+)|([A-Z]+[0-9]+)\"";
         elements = document.select(".js-metro-stations");
         elements.forEach(elem -> {
             String nameStation = elem.select(".name").text();
             String numberLine = elem.attr("data-line");
 
+            StationMetro stationMetro = new StationMetro();
             stationMetro.setName(nameStation);
             stationMetro.setNumberLineMetro(numberLine);
-            System.out.println("Number line \"" + numberLine + "\"\nName station \"" + nameStation + "\"");
+            allStationsMetro.setStations(stationMetro);
 
+            System.out.println("Number line \"" + numberLine + "\"\nName station \"" + nameStation + "\"");
         });
+
         try {
-            String jsonStation = objectMapper.writeValueAsString(stationMetro);
+            String jsonStation = objectMapper.writeValueAsString(allStationsMetro);
             FileWriter fileWriter = new FileWriter("data/stations.json");
             fileWriter.write(jsonStation);
             fileWriter.close();
