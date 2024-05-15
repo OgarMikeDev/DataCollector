@@ -2,14 +2,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AllLinesAndStationsMetro {
-    private List<LineAndHerNamesMetro> stations = new ArrayList<>();
+    private ArrayList<LineAndHerNamesMetro> stations = new ArrayList<>();
 
 
     public void setStations(LineAndHerNamesMetro station) {
         stations.add(station);
     }
 
-    public List<LineAndHerNamesMetro> getStations() {
+    public ArrayList<LineAndHerNamesMetro> getStations() {
         return stations;
     }
 }
