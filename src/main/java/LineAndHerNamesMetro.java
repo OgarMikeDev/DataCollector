@@ -1,7 +1,6 @@
 import java.util.ArrayList;
-import java.util.List;
 
-public class StationMetro {
+public class LineAndHerNamesMetro {
     private String numberLineMetro;
     private ArrayList<String> names = new ArrayList<>();
 

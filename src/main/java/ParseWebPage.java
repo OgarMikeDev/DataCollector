@@ -1,15 +1,10 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ParseWebPage {
     private Document document;
@@ -32,7 +27,7 @@ public class ParseWebPage {
 //        elements.forEach(elem -> System.out.println(elem.text()));
 
         ObjectMapper objectMapper = new ObjectMapper();
-        AllStationsMetro allStationsMetro = new AllStationsMetro();
+        AllLinesAndStationsMetro allLinesAndStationsMetro = new AllLinesAndStationsMetro();
 
         //String regexForNumber = "data-line=\"([0-9]{1,2})|([0-9]+[A-Z]+)|([A-Z]+[0-9]+)\"";
         elements = document.select(".js-metro-stations");
@@ -40,16 +35,16 @@ public class ParseWebPage {
             String nameStation = elem.select(".name").text();
             String numberLine = elem.attr("data-line");
 
-            StationMetro stationMetro = new StationMetro();
-            stationMetro.setName(nameStation);
-            stationMetro.setNumberLineMetro(numberLine);
-            allStationsMetro.setStations(stationMetro);
+            LineAndHerNamesMetro lineAndHerNamesMetro = new LineAndHerNamesMetro();
+            lineAndHerNamesMetro.setName(nameStation);
+            lineAndHerNamesMetro.setNumberLineMetro(numberLine);
+            allLinesAndStationsMetro.setStations(lineAndHerNamesMetro);
 
             System.out.println("Number line \"" + numberLine + "\"\nName station \"" + nameStation + "\"");
         });
 
         try {
-            String jsonStation = objectMapper.writeValueAsString(allStationsMetro);
+            String jsonStation = objectMapper.writeValueAsString(allLinesAndStationsMetro);
             FileWriter fileWriter = new FileWriter("data/stations.json");
             fileWriter.write(jsonStation);
             fileWriter.close();
