@@ -42,7 +42,7 @@ public class ParseWebPage {
 
             stationMetro.setName(nameStation);
             stationMetro.setNumberLineMetro(numberLine);
-            System.out.println("Name station \"" + nameStation + "\"\nNumber line \"" + numberLine + "\"");
+            System.out.println("Number line \"" + numberLine + "\"\nName station \"" + nameStation + "\"");
 
         });
         try {
