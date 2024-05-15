@@ -5,5 +5,6 @@ public class Main {
         ParseWebPage parseWebPage = new ParseWebPage();
         parseWebPage.getHtmlCodeWebPage();
         parseWebPage.getNamesAndLineStation();
+        parseWebPage.fromJsonAsJavaStations();
     }
 }

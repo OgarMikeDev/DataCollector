@@ -5,6 +5,8 @@ import org.jsoup.select.Elements;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class ParseWebPage {
     private Document document;
@@ -36,7 +38,7 @@ public class ParseWebPage {
             String numberLine = elem.attr("data-line");
 
             LineAndHerNamesMetro lineAndHerNamesMetro = new LineAndHerNamesMetro();
-            lineAndHerNamesMetro.setName(nameStation);
+            lineAndHerNamesMetro.setNames(nameStation);
             lineAndHerNamesMetro.setNumberLineMetro(numberLine);
             allLinesAndStationsMetro.setStations(lineAndHerNamesMetro);
 
@@ -51,5 +53,13 @@ public class ParseWebPage {
         } catch (Exception ex) {
             ex.getMessage();
         }
+    }
+
+
+    public void fromJsonAsJavaStations() throws IOException {
+        String json = Files.readString(Paths.get("data/stations.json"));
+        ObjectMapper objectMapper = new ObjectMapper();
+        AllLinesAndStationsMetro allLinesAndStationsMetro = objectMapper.readValue(json, AllLinesAndStationsMetro.class);
+        System.out.println(allLinesAndStationsMetro.toString());
     }
 }

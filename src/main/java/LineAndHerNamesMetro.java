@@ -12,11 +12,19 @@ public class LineAndHerNamesMetro {
         this.numberLineMetro = numberLineMetro;
     }
 
-    public ArrayList<String> getName() {
+    public ArrayList<String> getNames() {
         return names;
     }
 
-    public void setName(String name) {
+    public void setNames(String name) {
         names.add(name);
+    }
+
+    @Override
+    public String toString() {
+        return
+                "Number line metro \"" + getNumberLineMetro() + "\"" +
+                "List names stations \"" + getNames() + "\"";
+
     }
 }

@@ -12,4 +12,10 @@ public class AllLinesAndStationsMetro {
     public ArrayList<LineAndHerNamesMetro> getStations() {
         return stations;
     }
+
+
+    @Override
+    public String toString() {
+        return "All stations: " + getStations();
+    }
 }
