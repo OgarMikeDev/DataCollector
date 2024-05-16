@@ -65,6 +65,13 @@ public class ParseWebPage {
     }
 
     public void getFilesJsonAndCSV(File file) {
-
+        for (File currentFile : file.listFiles()) {
+            if (currentFile.isDirectory()) {
+                getFilesJsonAndCSV(currentFile);
+            } else if (currentFile.getName().endsWith(".json") ||
+                    currentFile.getName().endsWith(".csv")) {
+                System.out.println(currentFile.getName());
+            }
+        }
     }
 }
