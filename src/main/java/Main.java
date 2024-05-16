@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 
 public class Main {
@@ -6,5 +7,6 @@ public class Main {
         parseWebPage.getHtmlCodeWebPage();
         parseWebPage.getNamesAndLineStation();
         parseWebPage.fromJsonAsJavaStations();
+        parseWebPage.getFilesJsonAndCSV(new File("data/"));
     }
 }

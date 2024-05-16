@@ -3,6 +3,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -61,5 +62,16 @@ public class ParseWebPage {
         ObjectMapper objectMapper = new ObjectMapper();
         AllLinesAndStationsMetro allLinesAndStationsMetro = objectMapper.readValue(json, AllLinesAndStationsMetro.class);
         System.out.println(allLinesAndStationsMetro.toString());
+    }
+
+    public void getFilesJsonAndCSV(File file) {
+        for (File currentFile : file.listFiles()) {
+            if (currentFile.isDirectory()) {
+                getFilesJsonAndCSV(currentFile);
+            } else if (currentFile.getName().endsWith(".json") || currentFile.getName().endsWith(".csv")) {
+                System.out.println(currentFile.toPath());
+            }
+        }
+
     }
 }
