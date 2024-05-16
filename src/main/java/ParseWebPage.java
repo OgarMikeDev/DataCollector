@@ -69,7 +69,7 @@ public class ParseWebPage {
             if (currentFile.isDirectory()) {
                 getFilesJsonAndCSV(currentFile);
             } else if (currentFile.getName().endsWith(".json") || currentFile.getName().endsWith(".csv")) {
-                System.out.println(currentFile.toPath());
+                System.out.println(currentFile.getName());
             }
         }
 
