@@ -1,4 +1,5 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -8,8 +9,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ParseWebPage {
+    private List<String> jsonFilePaths = new ArrayList<>();
+    private List<String> csvFilePaths = new ArrayList<>();
     private Document document;
     private Elements elements;
 
@@ -68,10 +73,48 @@ public class ParseWebPage {
         for (File currentFile : file.listFiles()) {
             if (currentFile.isDirectory()) {
                 getFilesJsonAndCSV(currentFile);
-            } else if (currentFile.getName().endsWith(".json") ||
-                    currentFile.getName().endsWith(".csv")) {
-                System.out.println(currentFile.getName());
+            } else if (currentFile.getName().endsWith(".json")) {
+                jsonFilePaths.add(currentFile.getPath());
+                System.out.println(jsonFilePaths);
+            } else if (currentFile.getName().endsWith(".csv")) {
+                csvFilePaths.add(currentFile.getPath());
+                System.out.println(csvFilePaths);
             }
         }
+    }
+
+    public void jsonToJava(File file) throws IOException {
+        String json = Files.readString(file.toPath());
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        List<FromJsonToJava> fromJsonToJavaObjects = objectMapper.readValue(json, objectMapper.getTypeFactory().constructCollectionType(List.class, FromJsonToJava.class));
+        fromJsonToJavaObjects.forEach(System.out::println);
+
+    }
+
+    public void csvToJava(File file) throws IOException {
+
+        List<String> lines = Files.readAllLines(file.toPath());
+
+        for (int i = 1; i < lines.size(); i++) {
+            String line = lines.get(i);
+            String[] parts = line.split(",");
+
+            String nameStation = parts[0];
+            String numberLine = parts[1];
+
+            FromCsvToJava stopCsv = new FromCsvToJava(nameStation, numberLine);
+
+            System.out.println(stopCsv);
+
+        }
+    }
+
+    public List<String> getJsonFilePaths() {
+        return jsonFilePaths;
+    }
+
+    public List<String> getCsvFilePaths() {
+        return csvFilePaths;
     }
 }
