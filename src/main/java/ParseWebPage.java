@@ -23,7 +23,7 @@ public class ParseWebPage {
         String url = "https://skillbox-java.github.io/";
         document = Jsoup.connect(url).get();
         String htmlCode = String.valueOf(document);
-        FileWriter fileWriter = new FileWriter("data/codeHtmlMetro.html");
+        FileWriter fileWriter = new FileWriter("src/main/resources/codeHtmlMetro.html");
         fileWriter.write(htmlCode);
         return htmlCode;
     }
@@ -53,20 +53,12 @@ public class ParseWebPage {
 
         try {
             String jsonStation = objectMapper.writeValueAsString(allLinesAndStationsMetro);
-            FileWriter fileWriter = new FileWriter("data/stations.json");
+            FileWriter fileWriter = new FileWriter("src/main/resources/stations.json");
             fileWriter.write(jsonStation);
             fileWriter.close();
         } catch (Exception ex) {
             ex.getMessage();
         }
-    }
-
-
-    public void fromJsonAsJavaStations() throws IOException {
-        String json = Files.readString(Paths.get("data/stations.json"));
-        ObjectMapper objectMapper = new ObjectMapper();
-        AllLinesAndStationsMetro allLinesAndStationsMetro = objectMapper.readValue(json, AllLinesAndStationsMetro.class);
-        System.out.println(allLinesAndStationsMetro.toString());
     }
 
     public void getFilesJsonAndCSV(File file) {
