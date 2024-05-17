@@ -9,6 +9,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,20 +68,22 @@ public class ParseWebPage {
             } else if (currentFile.getName().endsWith(".json")) {
                 String json = Files.readString(currentFile.toPath());
                 ObjectMapper objectMapper = new ObjectMapper();
-                objectMapper.registerModule(new JavaTimeModule());
                 List<FromJsonToJava> jsonObjects = objectMapper.readValue(json,
-                        objectMapper.getTypeFactory().constructCollectionType(List.class, FromJsonToJava.class));
+                        objectMapper.getTypeFactory().constructCollectionType(List.class,
+                                FromJsonToJava.class));
                 jsonObjects.forEach(System.out::println);
 
             } else if (currentFile.getName().endsWith(".csv")) {
                 List<String> lines = Files.readAllLines(currentFile.toPath());
-
+                System.out.println("List lines \"" + lines + "\".");
                 for (int i = 1; i < lines.size(); i++) {
                     String line = lines.get(i);
                     String[] parts = line.split(",");
 
                     String nameStation = parts[0];
-                    String numberLine = parts[1];
+                    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.
+                            ofPattern("dd.MM.yyyy");
+                    LocalDate numberLine = LocalDate.parse(parts[1], dateTimeFormatter);
 
                     FromCsvToJava fromCsvToJava = new FromCsvToJava(nameStation, numberLine);
                     System.out.println(fromCsvToJava);

@@ -1,4 +1,6 @@
-public record FromCsvToJava(String name, String date) {
+import java.time.LocalDate;
+
+public record FromCsvToJava(String name, LocalDate date) {
     @Override
     public String toString() {
 
