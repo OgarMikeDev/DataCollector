@@ -60,31 +60,6 @@ public class ParseWebPage {
     }
 
     public void getFilesJsonAndCSV(File file) throws IOException {
-        for (File currentFile : file.listFiles()) {
-            if (currentFile.isDirectory()) {
-                getFilesJsonAndCSV(currentFile);
-            } else if (currentFile.getName().endsWith(".json")) {
-                String json = Files.readString(currentFile.toPath());
-                ObjectMapper objectMapper = new ObjectMapper();
-                objectMapper.registerModule(new JavaTimeModule());
-                List<FromJsonToJava> jsonObjects = objectMapper.readValue(json,
-                        objectMapper.getTypeFactory().constructCollectionType(List.class, FromJsonToJava.class));
-                jsonObjects.forEach(System.out::println);
 
-            } else if (currentFile.getName().endsWith(".csv")) {
-                List<String> lines = Files.readAllLines(currentFile.toPath());
-
-                for (int i = 1; i < lines.size(); i++) {
-                    String line = lines.get(i);
-                    String[] parts = line.split(",");
-
-                    String nameStation = parts[0];
-                    String numberLine = parts[1];
-
-                    FromCsvToJava fromCsvToJava = new FromCsvToJava(nameStation, numberLine);
-                    System.out.println(fromCsvToJava);
-                }
-            }
-        }
     }
 }
