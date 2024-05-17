@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ParseWebPage {
-    private List<String> jsonFilePaths = new ArrayList<>();
-    private List<String> csvFilePaths = new ArrayList<>();
     private Document document;
     private Elements elements;
 
@@ -61,52 +59,32 @@ public class ParseWebPage {
         }
     }
 
-    public void getFilesJsonAndCSV(File file) {
+    public void getFilesJsonAndCSV(File file) throws IOException {
         for (File currentFile : file.listFiles()) {
             if (currentFile.isDirectory()) {
                 getFilesJsonAndCSV(currentFile);
             } else if (currentFile.getName().endsWith(".json")) {
-                jsonFilePaths.add(currentFile.getPath());
-                System.out.println(jsonFilePaths);
+                String json = Files.readString(currentFile.toPath());
+                ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.registerModule(new JavaTimeModule());
+                List<FromJsonToJava> jsonObjects = objectMapper.readValue(json,
+                        objectMapper.getTypeFactory().constructCollectionType(List.class, FromJsonToJava.class));
+                jsonObjects.forEach(System.out::println);
+
             } else if (currentFile.getName().endsWith(".csv")) {
-                csvFilePaths.add(currentFile.getPath());
-                System.out.println(csvFilePaths);
+                List<String> lines = Files.readAllLines(currentFile.toPath());
+
+                for (int i = 1; i < lines.size(); i++) {
+                    String line = lines.get(i);
+                    String[] parts = line.split(",");
+
+                    String nameStation = parts[0];
+                    String numberLine = parts[1];
+
+                    FromCsvToJava fromCsvToJava = new FromCsvToJava(nameStation, numberLine);
+                    System.out.println(fromCsvToJava);
+                }
             }
         }
-    }
-
-    public void jsonToJava(File file) throws IOException {
-        String json = Files.readString(file.toPath());
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        List<FromJsonToJava> fromJsonToJavaObjects = objectMapper.readValue(json, objectMapper.getTypeFactory().constructCollectionType(List.class, FromJsonToJava.class));
-        fromJsonToJavaObjects.forEach(System.out::println);
-
-    }
-
-    public void csvToJava(File file) throws IOException {
-
-        List<String> lines = Files.readAllLines(file.toPath());
-
-        for (int i = 1; i < lines.size(); i++) {
-            String line = lines.get(i);
-            String[] parts = line.split(",");
-
-            String nameStation = parts[0];
-            String numberLine = parts[1];
-
-            FromCsvToJava stopCsv = new FromCsvToJava(nameStation, numberLine);
-
-            System.out.println(stopCsv);
-
-        }
-    }
-
-    public List<String> getJsonFilePaths() {
-        return jsonFilePaths;
-    }
-
-    public List<String> getCsvFilePaths() {
-        return csvFilePaths;
     }
 }
