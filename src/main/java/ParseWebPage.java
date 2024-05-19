@@ -62,30 +62,24 @@ public class ParseWebPage {
     }
 
     public void getFilesJsonAndCSV(File file) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
         for (File currentFile : file.listFiles()) {
             if (currentFile.isDirectory()) {
                 getFilesJsonAndCSV(currentFile);
             } else if (currentFile.getName().endsWith(".json")) {
-                String json = Files.readString(currentFile.toPath());
-                ObjectMapper objectMapper = new ObjectMapper();
-                List<FromJsonToJava> jsonObjects = objectMapper.readValue(json,
-                        objectMapper.getTypeFactory().constructCollectionType(List.class,
-                                FromJsonToJava.class));
-                jsonObjects.forEach(System.out::println);
-
+                String jsonStr = Files.readString(Paths.get(currentFile.getPath()));
+                List<FromJsonToJava> fromJsonToJavaList = objectMapper.readValue(jsonStr,
+                        objectMapper.getTypeFactory().constructCollectionType(
+                                List.class, FromJsonToJava.class
+                        ));
+                fromJsonToJavaList.forEach(System.out::println);
             } else if (currentFile.getName().endsWith(".csv")) {
-                List<String> lines = Files.readAllLines(currentFile.toPath());
-                System.out.println("List lines \"" + lines + "\".");
-                for (int i = 1; i < lines.size(); i++) {
-                    String line = lines.get(i);
-                    String[] parts = line.split(",");
-
-                    String nameStation = parts[0];
-                    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.
-                            ofPattern("dd.MM.yyyy");
-                    LocalDate numberLine = LocalDate.parse(parts[1], dateTimeFormatter);
-
-                    FromCsvToJava fromCsvToJava = new FromCsvToJava(nameStation, numberLine);
+                List<String> listStrCsv = Files.readAllLines(Paths.get(currentFile.getPath()));
+                for (int i = 1; i < listStrCsv.size(); i++) {
+                    String[] line = listStrCsv.get(i).split(",");
+                    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+                    LocalDate localDate = LocalDate.parse(line[1], dateTimeFormatter);
+                    FromCsvToJava fromCsvToJava = new FromCsvToJava(line[0], localDate);
                     System.out.println(fromCsvToJava);
                 }
             }
