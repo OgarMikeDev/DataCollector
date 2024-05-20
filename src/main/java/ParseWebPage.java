@@ -18,6 +18,7 @@ public class ParseWebPage {
     private Document document;
     private Elements elements;
     private List<FromJsonToJava> jsonObjects = new ArrayList<>();
+    private ListFullInformationMetro listFullInformationMetro = new ListFullInformationMetro();
 
     //Method get html-code web-page
     public String getHtmlCodeWebPage() throws IOException {
@@ -95,7 +96,14 @@ public class ParseWebPage {
                                     currentObjectJson.getDepth(),
                                     numberLine
                             );
+                            listFullInformationMetro.setStations(fullInformationMetro);
                             System.out.println(fullInformationMetro);
+                            ObjectMapper objectMapper = new ObjectMapper();
+//                            String strFullInfMetro = objectMapper.writeValueAsString(fullInformationMetro);
+//                            FileWriter fileWriter = new FileWriter("data/listFullInformationMetro.json");
+//                            fileWriter.write(strFullInfMetro);
+//                            fileWriter.flush();
+//                            fileWriter.close();
                         }
                     }
                 }
